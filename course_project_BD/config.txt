@@ -1,0 +1,6 @@
+QPSQL
+127.0.0.1
+postgres
+postgres
+19021999
+5433

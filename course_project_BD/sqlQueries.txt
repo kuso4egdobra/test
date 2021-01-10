@@ -1,0 +1,10 @@
+Все люди
+select * from person;
+Средний возраст всех людей
+select avg(case when person.id_death IS NULL then date_part('day', current_timestamp - birth.time) else date_part('day', death.time - birth.time) end)/365 as avg_age from ((person left join birth on person.id_birth = birth.id) left join death on person.id_death = death.id)where person.id_birth is not null;
+Процент мужчин
+with general as (select count(*) as count from person join fio on person.id_fio = fio.id), man as (select count(*) as count from (person join fio on person.id_fio = fio.id) as globalT group by sex having sex = 'M') select 100*man.count::float/general.count::float as percentage_man from general, man;
+Процент женщин
+with general as (select count(*) as count from person join fio on person.id_fio = fio.id), man as (select count(*) as count from (person join fio on person.id_fio = fio.id) as globalT group by sex having sex = 'F') select 100*man.count::float/general.count::float as percentage_woman from general, man;
+Максимальное количество документов
+with general as (select count(*) as cnt from document left join person on person.id = document.id_person group by person.id) select max(cnt), min(cnt) from general;
